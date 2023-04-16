@@ -14,8 +14,8 @@ void printList(Node* head) {
     int idx = 0;
     Node* curr = head;
     while(curr != NULL) {
+        printf("->%d", curr->value);
         int value = curr->value;
-        printf("->%d", value);
         curr = curr->next;
         idx++;
     }
@@ -43,21 +43,29 @@ void addToTail(Node* head, int value) {
 void addAtIndex(Node* head, int value, int index) {
     int i = 0;
     Node* curr = head;
-    while(curr->next != NULL) {
+    while(i+1 != index) {
         curr = curr->next;
         i++;
     }
     Node* newNode = malloc(sizeof(Node));
     newNode->value = value;
+
+    Node* currNext = curr->next;
+    curr->next = newNode;
+    newNode->next = currNext;
 }
 
 void deleteAtIndex(Node* head, int index) {
     int i = 0;
     Node* curr = head;
-    while(curr->next != NULL) {
+    while(i+1 != index) {
         curr = curr->next;
         i++;
     }
+
+    Node* currNext = curr->next;
+    curr->next = curr->next->next;
+    free(currNext);
 }
 
 void freeLinkedList(Node* head) {
@@ -79,28 +87,10 @@ int main(int argc, char *argv[]) {
     addToHead(&list, 222);
     addToTail(list, 111);
     addToHead(&list, 444);
-    // while(1) {
-    //     printf("********************\n");
-    //     printf("My C Linked List:\n");
-    //     printList(list);
-    //     int opt;
-    //     int val;
-    //     printf("1) Add to head\n2) Add to tail\n");
-    //     scanf("%d", &opt);
-    //     switch (opt) {
-    //         case 1:
-    //             printf("Value to add:");
-    //             scanf("%d", &val);
-    //             addToHead(&list, val);
-    //             break;
-    //         case 2:
-    //             printf("Value to add:");
-    //             scanf("%d", &val);
-    //             addToTail(list, val);
-    //             break;
-    //     }
-    // }
+    addAtIndex(list, 8008, 3);
+    deleteAtIndex(list, 2);
 
-    // freeLinkedList(list);
+    printList(list);
+    freeLinkedList(list);
     return 0;
 }
